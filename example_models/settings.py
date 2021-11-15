@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'catalog',
     'account',
     'pizza',
+    'users',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -80,23 +82,23 @@ WSGI_APPLICATION = 'example_models.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'example_models',
-        # 'USER': 'postgres',
-        # 'PASSWORD': '',
-        # 'HOST': 'localhost',
-        # 'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'example_models',
+#         # 'USER': 'postgres',
+#         # 'PASSWORD': '',
+#         # 'HOST': 'localhost',
+#         # 'PORT': '5432',
+#     }
+# }
 
 
 # Password validation
@@ -143,3 +145,5 @@ STATIC_ROOT = Path.joinpath(BASE_DIR, 'static')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'users.User'
