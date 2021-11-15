@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'pizza',
     'users',
     'orders',
+    'core',
 ]
 
 MIDDLEWARE = [
