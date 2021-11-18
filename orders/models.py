@@ -34,6 +34,23 @@ class BaseCartItem(LifecycleModelMixin, models.Model):
         abstract = True
 
 
+class OrderRang(models.Manager):
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.annotate(
+            rang=models.Case(
+                models.When(total_amount__lt=50, then=models.Value('Small')),
+                models.When(
+                    models.Q(total_amount__gte=50) & models.Q(total_amount__lt=150)
+                    , then=models.Value('Middle')),
+                models.When(total_amount__gte=150, then=models.Value('Big')),
+                default=models.Value('None'),
+                output_field=models.CharField(),
+            )
+        )
+        return queryset
+
+
 class Order(BaseCart):
     class OrderStatus(models.TextChoices):
         NEW = 'NEW', 'New'
@@ -43,12 +60,15 @@ class Order(BaseCart):
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
     status = models.CharField(max_length=10, default=OrderStatus.NEW, choices=OrderStatus.choices)
 
+    ranked_objects = OrderRang()
+    objects = models.Manager()
+
     def get_items(self) -> models.QuerySet:
-        return self.orderitem_set.all()
+        return self.items.all()
 
 
 class OrderItem(BaseCartItem):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey('catalog.Product', on_delete=models.CASCADE)
 
     @hook(AFTER_DELETE)

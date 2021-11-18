@@ -10,7 +10,7 @@ class OrderItemInline(admin.StackedInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'status', 'user')
+    list_display = ('id', 'status', 'user', 'total_quantity', 'total_amount')
     inlines = [OrderItemInline]
 
 
